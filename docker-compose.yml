@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres-knex-challenge
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: knex-challenge
+    volumes:
+      - ./data:/data/postgres
+    ports:
+      - "5422:5422"
+
+  app:
+    build: .
+    container_name: app-knex-challenge
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app
+    links:
+      - postgres
+    depends_on:
+      - postgres
+
+volumes:
+  data:
+    driver: local
